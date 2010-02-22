@@ -5,7 +5,7 @@
 CREATE TABLE IF NOT EXISTS `googlebase` (
   `googlebase_id` int(11) NOT NULL auto_increment,
   `googlebase_url` varchar(200) NOT NULL default '',
-  `products_id` int(11) NOT NULL default '',
+  `products_id` int(11) NOT NULL default 0,
   `googlebase_last_modified` datetime default NULL,
   `googlebase_expiration` datetime default NULL,
   `googlebase_item_xml` TEXT NOT NULL,
