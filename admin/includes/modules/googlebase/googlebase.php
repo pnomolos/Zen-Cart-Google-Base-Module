@@ -144,7 +144,9 @@ class googlebase {
     $item->addGbaseAttribute('item_type', 'Products');
     $item->addGbaseAttribute('quantity', $p->quantity);
     $item->addGbaseAttribute('price', $p->price);
+    $item->addGbaseAttribute('id', $p->zen_id);
     $item->addGbaseAttribute('zen_id', $p->zen_id, 'int', true);
+    $item->addGbaseAttribute('condition', 'new');
     if(zen_not_null($p->image_link)) $item->addGbaseAttribute('image_link', DIR_WS_CATALOG_IMAGES . $p->image_link);
     if(zen_not_null($p->weight)) $item->addGbaseAttribute('weight', $p->weight.' '.TEXT_PRODUCT_WEIGHT_UNIT, 'numberunit');
     if(zen_not_null($p->upc)) $item->addGbaseAttribute('upc', $p->upc);
