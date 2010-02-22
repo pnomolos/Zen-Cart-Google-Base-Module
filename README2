@@ -1,0 +1,64 @@
+google base module for zen-cart v0.1 beta
+
+introduction
+============
+The google base module provides with a simple batch upload facility to submit 
+all the shop's products to google base. It also provides integration with the 
+product management interface so the changes to existing products are reflected 
+in google base, the new products submitted and quantities updated when the 
+products are bought.
+
+features
+========
+- batch upload tool to upload all the products
+- auto-update gbase product when local product modified in the admin
+- submit to gbase new product created in the admin
+- update quantity in gbase when products are bought
+
+requirements
+============
+zen-cart v1.3.7
+PHP4/PHP5 with cURL (libcurl) installed and enabled.
+
+installation
+============
+installation instruction can be found in the INSTALLATION file included.
+REMEMBER TO BACKUP ALL YOUR FILES BEFORE INSTALLING!!!
+
+using the module
+================
+
+The options and manual operations can be accessed in the admin 
+going to Tools > Google Base.
+
+The first thing you need to do is authenticate against google base, the 
+authentication token returned will be stored in the database and can be 
+revoked by pressing the "revoke authentication" button.
+
+The following configurable options are available:
+"Enable Google Base": Whether to enable the module or not.
+"Limit for the number of products to upload at once": This option controls how 
+		many products to upload on each "batch". After pressing upload this many 
+		products will be uploaded and you'll have to press the button again to 
+		upload the rest of the products (it will resume from the last product
+		uploaded).
+"Author name for submitted products": The author name shown in the google base
+		page for the product.
+"Author email for submitted products": The author email shown the google base
+		page for the product.
+"Submit products as draft": If checked the products will be submitted as drafts,
+		which means you'll have to login to your google base dashboard and set them 
+		as published manually. Use this at first to test if everything is working 
+		properly.
+"Submit upc and/or isbn": If you have a module installed which allows you to 
+		specify upc and isbn for your products this option will add them to your
+		products attributes. NOTE: the module must place the upc and isbn in the 
+		"products" table of your database with column names "products_upc" and 
+		"products_isbn".
+
+proxy
+=====
+
+If you need a proxy to connect to the internet you must have it configured in
+your zen-cart installation by going to Configuration > My Store and setting
+cURL Proxy Status to true and cURL Proxy Address to your proxy address.

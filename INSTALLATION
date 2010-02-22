@@ -1,0 +1,203 @@
+google base module installation
+===============================
+
+Database table creation:
+========================
+
+First, install the sql patch "googlebase-install.sql" by going to
+the admin > Tools > Install SQL Patches and pasting the code found in the file,
+or just uploading the file.
+
+Installation of files:
+======================
+
+METHOD A:
+---------
+
+If you have the basic Zen Cart installation without any other modules or 
+add-on's, simply copy the provided files into your Zen Cart system, 
+preserving the file structure.
+
+
+METHOD B:
+---------
+
+If you have other modules installed on your Zen Cart installation, replacing 
+your existing files might break your installation. In this case, you 
+need to edit the existing files manually.
+
+This is a list of the files included in the module, the files with 
+asterisks are the ones you have to modify manually:
+
+YOUR-ZENCART-FOLDER:
+	admin/
+	googlebase-install.sql
+	includes/
+
+YOUR-ZENCART-FOLDER/admin:
+	googlebase.php
+	includes/
+	***product.php***
+
+YOUR-ZENCART-FOLDER/admin/includes:
+	boxes/
+	languages/
+	modules/
+
+YOUR-ZENCART-FOLDER/admin/includes/boxes:
+	extra_boxes/
+
+YOUR-ZENCART-FOLDER/admin/includes/boxes/extra_boxes:
+	googlebase_tools_dhtml.php
+
+YOUR-ZENCART-FOLDER/admin/includes/languages:
+	english/
+
+YOUR-ZENCART-FOLDER/admin/includes/languages/english:
+	extra_definitions/
+	googlebase.php
+
+YOUR-ZENCART-FOLDER/admin/includes/languages/english/extra_definitions:
+	googlebase.php
+
+YOUR-ZENCART-FOLDER/admin/includes/modules:
+	googlebase/
+	***update_product.php***
+
+YOUR-ZENCART-FOLDER/admin/includes/modules/googlebase:
+	docs/
+	googlebase.php
+	library/
+
+YOUR-ZENCART-FOLDER/admin/includes/modules/googlebase/library:
+	gb-authentication.php
+	gb-feeds.php
+	gb-http.php
+	gb-items.php
+	xml-processing/
+
+YOUR-ZENCART-FOLDER/admin/includes/modules/googlebase/library/xml-processing:
+	gb-xmlbuilder.php
+	gb-xmlparser.php
+
+YOUR-ZENCART-FOLDER/includes:
+	auto_loaders/
+	classes/
+
+YOUR-ZENCART-FOLDER/includes/auto_loaders:
+	config.googlebase.php
+
+YOUR-ZENCART-FOLDER/includes/classes:
+	observers/
+
+YOUR-ZENCART-FOLDER/includes/classes/observers:
+	class.googlebaseobserver.php
+
+
+Files to modify:
+
+* The LINE number indicates where the change would need to be made if the file 
+ was unchanged by other modules.
+
+--------------------------------------------------------------------------------
+YOUR-ZENCART-FOLDER/admin/product.php   line ~16
+================================================================================
+
+after the line:
+
+  if (zen_not_null($action)) {
+  
+add:
+
+    ///////////////////// BEGIN GOOGLEBASE /////////////////////////////
+    require_once(DIR_WS_MODULES.'googlebase/googlebase.php');
+    if($action == 'delete_product_confirm') {
+      $gb = new googlebase();
+      #echo $action.'<br>'.zen_db_insert_id(); die;
+      if(zen_not_null($_POST['products_id'])) {
+        $gb->handleProductModification($action, $_POST['products_id']);
+      }
+    }
+    ///////////////////// END GOOGLEBASE /////////////////////////////
+
+after this you should see this code:
+
+    switch ($action) {
+      case 'setflag':
+        if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
+          if (isset($_GET['pID'])) {
+
+          
+================================================================================
+
+--------------------------------------------------------------------------------
+YOUR-ZENCART-FOLDER/admin/includes/modules/update_product.php   line ~16
+================================================================================
+
+after the lines:
+
+      // ImageMagick
+      if (IMAGE_MANAGER_HANDLER == '1') {
+        copy($src, $filename_large);
+        copy($src, $filename_medium);
+        exec(DIR_IMAGEMAGICK . "mogrify -geometry " . $large_width . " " . $filename_large);
+        exec(DIR_IMAGEMAGICK . "mogrify -geometry " . $medium_width . " " . $filename_medium);
+        exec(DIR_IMAGEMAGICK . "mogrify -geometry " . $small_width . " " . $filename_small);
+      }
+    }
+
+add:
+
+    ////////////////// BEGIN GOOGLEBASE /////////////////////////
+    require_once(DIR_WS_MODULES.'googlebase/googlebase.php');
+    $gb = new googlebase();
+    $gb->handleProductModification($action, $products_id);
+    ////////////////// END GOOGLEBASE /////////////////////////
+
+after this you should see the code:
+
+    zen_redirect(zen_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products_id . (isset($_GET['page']) ? '&page=' . $_GET['page'] : '')));
+  }
+?>
+
+
+Integration with the Google Checkout module:
+============================================
+
+If you have the gcheckout module installed 
+(the one found here: http://code.google.com/p/google-checkout-zencart/)
+you can modify one of the files to make it update the gbase products when a 
+customer checks out using gcheckout (this code will be included in the next 
+release of the Google Checkout zen-cart module).
+
+--------------------------------------------------------------------------------
+YOUR-ZENCART-FOLDER/admin/includes/functions/extra_functions/added_function_for_google_checkout.php   line ~228
+================================================================================
+
+after the lines:
+
+      $messageStack->add_session( sprintf(GOOGLECHECKOUT_ERR_INVALID_STATE_TRANSITION,
+                                  $statuses[$check_status->fields['orders_status']],
+                                  $statuses[$status],
+                                  $statuses[$check_status->fields['orders_status']]),
+                                  'error');
+    }    
+    
+add:
+
+    /////////////////////////// BEGIN GOOGLE BASE //////////////////////////////
+    // if google base module exists update the google base items on state change
+    if(file_exists(DIR_FS_ADMIN.'includes/modules/googlebase/googlebase.php')) {
+      require_once('admin/includes/modules/googlebase/googlebase.php');
+      $gb = new googlebase();
+      $gb->updateProducts(null, $oID);
+    }
+    //////////////////////////// END GOOGLE BASE ///////////////////////////////
+    
+after this you should see the code:
+
+    // Send Buyer's message
+    if($cust_notify==1 && isset($notify_comments) && !empty($notify_comments)) {
+      $cust_notify_ok = '0';      
+      if(!((strlen(htmlentities(strip_tags($notify_comments))) > GOOGLE_MESSAGE_LENGTH)
+              && MODULE_PAYMENT_GOOGLECHECKOUT_USE_CART_MESSAGING=='True')){
