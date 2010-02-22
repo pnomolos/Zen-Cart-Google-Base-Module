@@ -142,7 +142,7 @@ class googlebase {
                      $this->getOption('authoremail'));
     $item->setLink($p->link);
     $item->addGbaseAttribute('item_type', 'Products');
-    $item->addGbaseAttribute('quantity', $p->quantity);
+    $item->addbaseAttribute('quantity', $p->quantity);
     $item->addGbaseAttribute('price', $p->price);
     $item->addGbaseAttribute('id', $p->zen_id);
     $item->addGbaseAttribute('zen_id', $p->zen_id, 'int', true);
