@@ -18,7 +18,9 @@
 /**
  * @author pablif@gmail.com
  */
- 
+$autoLoadConfig[180][] = array('autoType'=>'class',
+                               'loadFile'=>'googlebase.php',
+                                'classPath' => DIR_WS_MODULES . 'googlebase/');
 $autoLoadConfig[180][] = array('autoType'=>'class',
                                'loadFile'=>'observers/class.googlebaseobserver.php');
 $autoLoadConfig[180][] = array('autoType'=>'classInstantiate',

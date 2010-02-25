@@ -10,8 +10,8 @@
     die('Illegal Access');
   }
   
-  require_once(DIR_WS_MODULES.'googlebase/library/gb-http.php');
-  require_once(DIR_WS_MODULES.'googlebase/googlebase.php');
+  require_once(DIR_FS_CATALOG_MODULES.'googlebase/library/gb-http.php');
+  require_once(DIR_FS_CATALOG_MODULES.'googlebase/googlebase.php');
   
   $action = (isset($_GET['action']) ? $_GET['action'] : '');
   $token = (isset($_GET['token']) ? $_GET['token'] : '');
@@ -20,7 +20,7 @@
 
   if(!$is_authenticated && zen_not_null($action) && $action == 'auth'||
      zen_not_null($token)) {
-    require_once(DIR_WS_MODULES.'googlebase/library/gb-authentication.php');
+    require_once(DIR_FS_CATALOG_MODULES.'googlebase/library/gb-authentication.php');
     if(zen_not_null($token)) {
       $gbhttp = googlebase::getGbaseHttpRequest();
       $response = gb_get_session_token($token, $gbhttp);
@@ -42,7 +42,7 @@
     if($action == 'options') {
       $gb->editOptions();
     } else if($action == 'revoke' && $is_authenticated) {
-      require_once(DIR_WS_MODULES.'googlebase/library/gb-authentication.php');
+      require_once(DIR_FS_CATALOG_MODULES.'googlebase/library/gb-authentication.php');
       $gbhttp = googlebase::getGbaseHttpRequest();
       gb_revoke_session_token($gb->getOption('token'), $gbhttp);
       $gbhttp->close();

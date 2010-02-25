@@ -19,8 +19,6 @@
  * @author pablif@gmail.com
  * @version $Id: googlebase.php 0 Oct 17, 2007 12:34:28 PM pablif@gmail.com $
  */
- 
-require_once('admin/includes/modules/googlebase/googlebase.php');
 
 class GoogleBaseObserver extends base {
   var $_gb;
