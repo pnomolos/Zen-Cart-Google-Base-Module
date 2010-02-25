@@ -110,7 +110,7 @@ after the line:
 add:
 
     ///////////////////// BEGIN GOOGLEBASE /////////////////////////////
-    require_once(DIR_WS_MODULES.'googlebase/googlebase.php');
+    DIR_FS_CATALOG_MODULES(DIR_WS_MODULES.'googlebase/googlebase.php');
     if($action == 'delete_product_confirm') {
       $gb = new googlebase();
       #echo $action.'<br>'.zen_db_insert_id(); die;
@@ -149,7 +149,7 @@ after the lines:
 add:
 
     ////////////////// BEGIN GOOGLEBASE /////////////////////////
-    require_once(DIR_WS_MODULES.'googlebase/googlebase.php');
+    require_once(DIR_FS_CATALOG_MODULES.'googlebase/googlebase.php');
     $gb = new googlebase();
     $gb->handleProductModification($action, $products_id);
     ////////////////// END GOOGLEBASE /////////////////////////
@@ -187,8 +187,8 @@ add:
 
     /////////////////////////// BEGIN GOOGLE BASE //////////////////////////////
     // if google base module exists update the google base items on state change
-    if(file_exists(DIR_FS_ADMIN.'includes/modules/googlebase/googlebase.php')) {
-      require_once('admin/includes/modules/googlebase/googlebase.php');
+    if(file_exists(DIR_FS_CATALOG_MODULES.'googlebase/googlebase.php')) {
+      require_once(DIR_FS_CATALOG_MODULES.'googlebase/googlebase.php');
       $gb = new googlebase();
       $gb->updateProducts(null, $oID);
     }

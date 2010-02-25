@@ -196,7 +196,7 @@ if ($_POST['image_delete'] == 1) {
     }
 
     ////////////////// BEGIN GOOGLEBASE /////////////////////////
-    require_once(DIR_WS_MODULES.'googlebase/googlebase.php');
+    require_once(DIR_FS_CATALOG_MODULES.'googlebase/googlebase.php');
     $gb = new googlebase();
     $gb->handleProductModification($action, $products_id);
     ////////////////// END GOOGLEBASE /////////////////////////

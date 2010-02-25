@@ -16,7 +16,7 @@
   if (zen_not_null($action)) {
     
     ///////////////////// BEGIN GOOGLEBASE /////////////////////////////
-    require_once(DIR_WS_MODULES.'googlebase/googlebase.php');
+    require_once(DIR_FS_CATALOG_MODULES.'googlebase/googlebase.php');
     if($action == 'delete_product_confirm') {
       $gb = new googlebase();
       #echo $action.'<br>'.zen_db_insert_id(); die;
