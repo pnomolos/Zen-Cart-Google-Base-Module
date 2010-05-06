@@ -22,6 +22,7 @@ define('GB_OPTIONS_DRAFT', 'submit products as draft');
 define('GB_OPTIONS_UPC', 'submit upc and/or isbn (you must have a products_upc and/or products_isbn column in the products database table)');
 define('GB_OPTIONS_SUBMIT', 'save');
 
+include (DIR_FS_CATALOG_LANGUAGES.'english/extra_definitions/googlebase.php');
 
 
 ?>
