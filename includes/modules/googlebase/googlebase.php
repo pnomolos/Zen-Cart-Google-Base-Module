@@ -122,11 +122,11 @@ class googlebase {
       if(isset($entry['g:expiration_date'])) {
         $expiration = "'".substr($entry['g:expiration_date']['VALUE'], 0, 20)."'";
         $expiration[11] = ' ';
+        $db->Execute("update ".TABLE_GOOGLEBASE." 
+                      set googlebase_expiration = $expiration,
+                          googlebase_last_modified = now()
+                      where googlebase_url = '{$entry['atom:id']['VALUE']}'");
       }
-      $db->Execute("update ".TABLE_GOOGLEBASE." 
-                    set googlebase_expiration = $expiration,
-                        googlebase_last_modified = now()
-                    where googlebase_url = '{$entry['atom:id']['VALUE']}'");
     }
   }
   
