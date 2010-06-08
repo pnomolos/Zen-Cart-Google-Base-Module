@@ -85,7 +85,7 @@ class googlebase {
   function getGbaseItemsFromDb($ids) {
     global $db;
     if(!defined('TABLE_GOOGLEBASE')) {
-      require_once('admin/includes/languages/english/extra_definitions/googlebase.php');
+      require_once(dirname(realpath(__FILE__)) . '/../../languages/english/extra_definitions/googlebase.php');
     }
     $query = "select gb.products_id as id, gb.googlebase_item_xml as item_xml
               from ".TABLE_GOOGLEBASE." gb
